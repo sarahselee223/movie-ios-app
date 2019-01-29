@@ -1,29 +1,65 @@
 import React from 'react';
-import { StyleSheet, Button, View, ImageBackground } from 'react-native';
-
+import { StyleSheet, View, ImageBackground, Modal } from 'react-native';
+import FrontPage from './components/FrontPage'
+import MovieList from './components/Movie/MovieList'
+import { getMovies, getActors } from './api'
 
 export default class App extends React.Component {
+  
+  state = {
+    movies: [],
+    actors: [],
+    openMovieModal: false,
+    openActorModal: false,
+    selectedMovie: null,
+    selectedActor: null,
+  }
+
+  componentDidMount() {
+    this.fetchMovies()
+    this.fetchActors()
+  }
+
+  fetchMovies = async () => {
+    const { data } = await getMovies()
+    this.setState({ movies: data })
+  }
+
+  fetchActors = async () => {
+    const { data } = await getActors()
+    this.setState({ actors: data })
+  }
+
+  onPressButtonMovies = () => {  
+    this.setState({
+      openMovieModal: true
+    })
+  }
+
+  onPressButtonActors = () => {
+    console.warn(this.state.actors)
+  }
+
+  closeMovieModal = () => {
+    this.setState({
+      openMovieModal:false
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <ImageBackground source={require('./assets/movie.jpg')} style={styles.backgroundImage}>
-          <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <Button
-              onPress={this._onPressButton}
-              title="Movies"
-              color="white"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              onPress={this._onPressButton}
-              title="Actors"
-              color="white"
-            />
-          </View>
-          </View>
+          <MovieList
+            movies={this.state.movies}
+            openMovieModal={this.state.openMovieModal}
+            closeMovieModal={this.closeMovieModal}
+          />
+          <FrontPage 
+            onPressButtonMovies={this.onPressButtonMovies}
+            onPressButtonActors={this.onPressButtonActors}/>
         </ImageBackground>
+        
       </View>
     );
   }
@@ -32,7 +68,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -41,14 +77,5 @@ const styles = StyleSheet.create({
     height: '100%', 
     flex: 1,
   },
-  buttonsContainer:{
-    flex: 1,
-    marginTop: 200,
-    flexDirection: "row",
-    alignSelf: "center"
-    // justifyContent: "space-between",
-  },
-  buttonContainer:{
-    margin: 20,
-  }
+  
 });
