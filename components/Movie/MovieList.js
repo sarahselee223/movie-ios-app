@@ -1,5 +1,15 @@
 import React from "react";
-import { StyleSheet, FlatList, View, Modal, Button, TouchableOpacity, Text } from "react-native";
+import {
+    StyleSheet,
+    FlatList,
+    View,
+    Modal,
+    Button,
+    TouchableOpacity,
+    Text,
+    Image
+} from "react-native";
+import MovieItem from './MovieItem'
 
 const MovieList = props => {
   return (
@@ -9,15 +19,21 @@ const MovieList = props => {
       visible={props.openMovieModal}
     >
       <View style={styles.modalContainer}>
+        <View style={styles.addMovieContainer}>
+          <Text style={styles.addMovieFont}>Movie List</Text>
+          <Button title="Add Movie"></Button>
+        </View>
         <FlatList
           style={styles.listContainer}
           data={props.movies}
           renderItem={(movie) => (
-            <TouchableOpacity>
-              <View style={styles.listItem}>
-                <Text style={styles.titleStyle}>{movie.item.name}</Text>
-              </View>
-            </TouchableOpacity>
+           <MovieItem
+             poster_url={movie.item.poster_url}
+             movieName={movie.item.name}
+             release_date={movie.item.release_date}
+             rating={movie.item.rating}
+             description={movie.item.description}
+           /> 
           )}
         />
         <View>
@@ -26,37 +42,33 @@ const MovieList = props => {
         </View>
       </View>
     </Modal>
-
   )
 }
 
 const styles = StyleSheet.create({
+  addMovieFont: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  addMovieContainer: {
+    marginTop: 30,
+    marginBottom: 20
+  },
   listContainer: {
-    marginTop: 200,
+    marginBottom: 50,
     width: "100%",
   },
   modalContainer: {
     margin: 22,
+    marginBottom: 100,
+    paddingRight: 15,
   },
   placeName: {
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 28
   },
-  listItem: {
-    width: "100%",
-    marginBottom: 5,
-    padding: 10,
-    backgroundColor: "#eee", 
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  titleStyle: {
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 28,
-    color: "black" 
-  }
+  
 });
 
 export default MovieList
