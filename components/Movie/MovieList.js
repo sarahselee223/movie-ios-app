@@ -5,11 +5,10 @@ import {
     View,
     Modal,
     Button,
-    TouchableOpacity,
     Text,
-    Image
 } from "react-native";
 import MovieItem from './MovieItem'
+import AddMovieForm from './AddMovieForm'
 
 const MovieList = props => {
   return (
@@ -19,10 +18,7 @@ const MovieList = props => {
       visible={props.openMovieModal}
     >
       <View style={styles.modalContainer}>
-        <View style={styles.addMovieContainer}>
-          <Text style={styles.addMovieFont}>Movie List</Text>
-          <Button title="Add Movie"></Button>
-        </View>
+        <AddMovieForm/>
         <FlatList
           style={styles.listContainer}
           data={props.movies}
@@ -46,14 +42,7 @@ const MovieList = props => {
 }
 
 const styles = StyleSheet.create({
-  addMovieFont: {
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  addMovieContainer: {
-    marginTop: 30,
-    marginBottom: 20
-  },
+
   listContainer: {
     marginBottom: 50,
     width: "100%",
