@@ -34,6 +34,9 @@ class AddMovieForm extends Component {
             openForm: false
         })
     }
+    handleChange = (name, value) => {
+        this.setState({ ...this.state, [name]: value })
+    }
 
     render (){
         return (
@@ -47,52 +50,49 @@ class AddMovieForm extends Component {
             {this.state.openForm ? (
                 <View>
                     <View style={styles.nameBox}>
-                        <Text style={styles.nameText}>Name:</Text>
+                        <Text style={styles.nameText}>Movie Name</Text>
                         <TextInput
-                            placeholder="Title"
-                            name={this.state.name}
-                            onChangeText={this.movieNameChangedHandler}
+                            placeholder="Movie Name"
+                            onChangeText={(val)=>this.handleChange('name', val)}
                             style={styles.nameInput}
                         />
                     </View>
                     <View style={styles.nameBox}>
-                        <Text style={styles.nameText}>Description:</Text>
+                        <Text style={styles.nameText}>Description</Text>
                         <TextInput
                             placeholder="Description"
-                            description={this.state.description}
-                            onChangeText={this.movieDescriptionChangedHandler}
+                            onChangeText={(val)=>this.handleChange('description', val)}
                             style={styles.nameInput}
                         />
                     </View>
                     <View style={styles.nameBox}>
-                        <Text style={styles.nameText}>Release Date:</Text>
+                        <Text style={styles.nameText}>Release Date</Text>
                         <TextInput
                             placeholder="Release Date"
-                            release_date={this.state.release_date}
-                            onChangeText={this.movieDateChangedHandler}
+                            onChangeText={(val)=>this.handleChange('release_date', val)}
                             style={styles.nameInput}
                         />
                     </View>
                     <View style={styles.nameBox}>
-                        <Text style={styles.nameText}>Rating:</Text>
+                        <Text style={styles.nameText}>Rating</Text>
                         <TextInput
                             placeholder="Rating"
-                            rating={this.state.rating}
-                            onChangeText={this.movieRatingChangedHandler}
+                            onChangeText={(val)=>this.handleChange('rating', val)}
                             style={styles.nameInput}
                         />
                     </View>
                     <View style={styles.nameBox}>
-                        <Text style={styles.nameText}>Poster URL:</Text>
+                        <Text style={styles.nameText}>Poster URL</Text>
                         <TextInput
                             placeholder="Poster URL"
-                            poster_url={this.state.poster_url}
-                            onChangeText={this.moviePosterChangedHandler}
+                            onChangeText={(val)=>this.handleChange('poster_url', val)}
                             style={styles.nameInput}
                         />
                     </View>
-                    <Button title="Submit"></Button>
-                    <Button title="Cancel" onPress={this.closeMovieForm}></Button>
+                    <View style={styles.submitButton}>
+                        <Button title="Submit"></Button>
+                        <Button title="Cancel" onPress={this.closeMovieForm}></Button>
+                    </View>
                 </View>  
             ): null }
          </View>
@@ -102,7 +102,7 @@ class AddMovieForm extends Component {
 
 const styles = StyleSheet.create({
     nameBox: {
-        marginTop: 20,
+        marginTop: 30,
         flexDirection: "row",
     },
     nameText:{
@@ -119,6 +119,11 @@ const styles = StyleSheet.create({
       marginTop: 30,
       marginBottom: 20
     },
+    submitButton: {
+      marginTop: 30,
+      marginBottom: 20
+    }
+
 })
 
 export default AddMovieForm
