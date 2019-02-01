@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ImageBackground, Modal } from 'react-native';
 import FrontPage from './components/FrontPage'
 import MovieList from './components/Movie/MovieList'
-import { getMovies, getActors } from './api'
+import { getMovies, getActors, deleteMovie} from './api'
 
 export default class App extends React.Component {
   
@@ -30,6 +30,17 @@ export default class App extends React.Component {
     this.setState({ actors: data })
   }
 
+  deleteMovie = async (id) => {
+    try{
+      await deleteMovie(id)
+      this.fetchMovies()
+    }
+    catch(e){
+      console.warn(e)
+    }
+  }
+
+
   onPressButtonMovies = () => {  
     this.setState({
       openMovieModal: true
@@ -54,6 +65,9 @@ export default class App extends React.Component {
             movies={this.state.movies}
             openMovieModal={this.state.openMovieModal}
             closeMovieModal={this.closeMovieModal}
+            fetchMovies={this.fetchMovies}
+            deleteMovie={this.deleteMovie}
+            updateMovie={this.updateMovie}
           />
           <FrontPage 
             onPressButtonMovies={this.onPressButtonMovies}

@@ -4,8 +4,10 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Image
+    Image,
+    Button
 } from "react-native";
+
 
 const MovieItem = props => {
     return (
@@ -21,6 +23,8 @@ const MovieItem = props => {
                     {"\n"}{props.rating}{"\n"}{props.release_date.slice(0,10)}{"\n"}
                     </Text>
                 </Text>
+                  <Button title="Edit" onPress={()=>props.updateMovie(props.id)}/>
+                  <Button title="Delete" onPress={()=>props.deleteMovie(props.id)}/>
                 </View>
             </View>
         </TouchableOpacity>

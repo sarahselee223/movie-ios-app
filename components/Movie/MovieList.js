@@ -4,8 +4,7 @@ import {
     FlatList,
     View,
     Modal,
-    Button,
-    Text,
+    Button
 } from "react-native";
 import MovieItem from './MovieItem'
 import AddMovieForm from './AddMovieForm'
@@ -18,7 +17,8 @@ const MovieList = props => {
       visible={props.openMovieModal}
     >
       <View style={styles.modalContainer}>
-        <AddMovieForm/>
+        <AddMovieForm
+          fetchMovies={props.fetchMovies}/>
         <FlatList
           style={styles.listContainer}
           data={props.movies}
@@ -28,7 +28,10 @@ const MovieList = props => {
              movieName={movie.item.name}
              release_date={movie.item.release_date}
              rating={movie.item.rating}
+             id={movie.item.id}
              description={movie.item.description}
+             deleteMovie={props.deleteMovie}
+             updateMovie={props.updateMovie}
            /> 
           )}
         />

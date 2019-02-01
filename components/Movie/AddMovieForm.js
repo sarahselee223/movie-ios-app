@@ -5,22 +5,25 @@ import {
     Button,
     TextInput,
     Text,
+    TouchableHighlight,
 } from "react-native";
+import { createMovie } from '../../api'
+import CalendarPicker from 'react-native-calendar-picker';
 
 class AddMovieForm extends Component {
     constructor(props) {
         super(props)
-        const formattedDate = props.release_date ? new Date(props.release_date).toISOString().substring(0, 10) : ''
         this.state = {
           name: props.name || '',
           description: props.description || '',
-          release_date: formattedDate,
+          release_date: props.release_date || '',
           rating: props.rating || '',
           poster_url: props.poster_url || '',
           openForm: false,
           success: false,
           error: null,
-          loading: false
+          loading: false,
+          dateOpen: false,
         }
     }
 
@@ -37,12 +40,55 @@ class AddMovieForm extends Component {
     handleChange = (name, value) => {
         this.setState({ ...this.state, [name]: value })
     }
+    handleDate = () => {
+        this.setState({
+            dateOpen: !this.state.dateOpen
+        })
+    }
+    setDate=(newDate)=>{
+        this.setState({release_date: newDate})
+    }
+    handleSubmit = async(e) => {
+        e.preventDefault()
+        const { name, description, release_date, rating, poster_url } = this.state
+        const newMovie = {
+            name,
+            description,
+            rating,
+            release_date,
+            poster_url: poster_url 
+        }
+        try {
+           await createMovie(newMovie)
+            this.setState({
+                name: '',
+                description: '',
+                release_date: '',
+                rating: '',
+                poster_url: '',
+                success: true,
+                error: null,
+                openForm: false,
+                dateOpen: false,
+              })
+            props.fetchMovies()
+            }
+            
+        catch (error) {
+            this.setState({
+              success: false,
+              error: 'Could not create movie.'
+            })
+        }
+    }
 
     render (){
         return (
         <View style={styles.addMovieContainer}>
             <View>
-                <Text style={styles.addMovieFont}>Movie List</Text>
+                {this.state.openForm? (
+                    <Text style={styles.addMovieFont}>Add Movie</Text>
+                ): <Text style={styles.addMovieFont}>Movie List</Text>}
                 {!this.state.openForm? (
                     <Button title="Add Movie" onPress={this.openMovieForm}></Button>
                 ): null}
@@ -66,13 +112,17 @@ class AddMovieForm extends Component {
                         />
                     </View>
                     <View style={styles.nameBox}>
-                        <Text style={styles.nameText}>Release Date</Text>
-                        <TextInput
-                            placeholder="Release Date"
-                            onChangeText={(val)=>this.handleChange('release_date', val)}
-                            style={styles.nameInput}
-                        />
+                        <TouchableHighlight
+                            onPress={this.handleDate}>
+                        <Text>Release Date</Text>
+                        </TouchableHighlight>
                     </View>
+                    {this.state.dateOpen? (
+                        <CalendarPicker
+                            onDateChange={this.setDate}
+                        />
+                    ): null}
+                
                     <View style={styles.nameBox}>
                         <Text style={styles.nameText}>Rating</Text>
                         <TextInput
@@ -90,7 +140,7 @@ class AddMovieForm extends Component {
                         />
                     </View>
                     <View style={styles.submitButton}>
-                        <Button title="Submit"></Button>
+                        <Button title="Submit" onPress={this.handleSubmit}></Button>
                         <Button title="Cancel" onPress={this.closeMovieForm}></Button>
                     </View>
                 </View>  
@@ -104,6 +154,10 @@ const styles = StyleSheet.create({
     nameBox: {
         marginTop: 30,
         flexDirection: "row",
+    },
+    dateButton:{
+        fontSize: 10,
+        color: "grey"
     },
     nameText:{
         width: "30%",
