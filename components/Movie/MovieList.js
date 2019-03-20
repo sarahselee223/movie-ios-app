@@ -34,6 +34,7 @@ const MovieList = props => {
              updateMovie={props.updateMovie}
            /> 
           )}
+          keyExtractor={(item, index) => index.toString()}
         />
         <View>
           {/* <Button title="Delete" color="red" onPress={props.onItemDeleted} /> */}
