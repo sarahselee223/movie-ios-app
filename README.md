@@ -3,9 +3,12 @@ This is a prototype iOS mobile application to save and manage list of your favor
 
 ## How to run simulator?
 1. Let's run a server
-Backend : https://github.com/sarahselee223/independent-study-backend
+https://github.com/sarahselee223/independent-study-backend
 ```bash
 npm install
+createdb gimdb
+npm run latest
+npm run seed
 npm run dev
 ```
 
